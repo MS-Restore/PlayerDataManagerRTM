@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "playerdatamanagerrtm",
+  "version": "${version}",
+  "name": "PlayerDataManagerRTM",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/playerdatamanagerrtm/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "fabric-datagen": [
+      "fun.bm.playerdatamanagerrtm.client.PlayerdatamanagerrtmDataGenerator"
+    ],
+    "main": [
+      "fun.bm.playerdatamanagerrtm.Playerdatamanagerrtm"
+    ]
+  },
+  "mixins": [
+    "playerdatamanagerrtm.mixins.json",
+    {
+      "config": "playerdatamanagerrtm.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
