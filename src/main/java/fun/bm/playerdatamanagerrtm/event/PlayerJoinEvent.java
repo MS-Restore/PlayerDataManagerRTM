@@ -15,13 +15,13 @@ public class PlayerJoinEvent {
             PlayerData data = PlayerDataManager.getPlayerData(player);
 
             {
-                // process Old Data
+                // process old data
                 PlayerOldData oldData = data.oldData;
                 PlayerBaseData baseData = data.baseData;
                 if (!baseData.name.equals(player.getEntityName())) {
                     oldData.usedNames.add(baseData.name);
                 }
-                if (!baseData.lastUsedIp.equals(player.getIp())) {
+                if (!baseData.lastUsedIp.equals(player.getIp()) && !baseData.lastUsedIp.equals("unknown")) {
                     oldData.usedIps.add(baseData.lastUsedIp);
                 }
             }
@@ -44,6 +44,8 @@ public class PlayerJoinEvent {
 
                 gameplayData.totalJoins++;
             }
+
+            PlayerDataManager.save();
         });
     }
 }

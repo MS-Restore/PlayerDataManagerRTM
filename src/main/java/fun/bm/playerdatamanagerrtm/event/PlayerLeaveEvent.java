@@ -13,6 +13,7 @@ public class PlayerLeaveEvent {
             PlayerData data = PlayerDataManager.getPlayerData(player);
             PlayerGameplayData gameplayData = data.gamePlayData;
             gameplayData.lastLeave = System.currentTimeMillis();
+            PlayerDataManager.save();
         });
     }
 }

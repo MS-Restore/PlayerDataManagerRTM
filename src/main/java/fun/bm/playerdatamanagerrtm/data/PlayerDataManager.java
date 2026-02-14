@@ -4,6 +4,7 @@ import com.google.gson.stream.JsonReader;
 import com.mojang.logging.LogUtils;
 import fun.bm.playerdatamanagerrtm.data.data.PlayerBaseData;
 import fun.bm.playerdatamanagerrtm.data.data.PlayerData;
+import fun.bm.playerdatamanagerrtm.util.DirectoryAccessor;
 import fun.bm.playerdatamanagerrtm.util.GsonUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.slf4j.Logger;
@@ -11,27 +12,19 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static fun.bm.playerdatamanagerrtm.Playerdatamanagerrtm.BASE_DIR;
+
 public class PlayerDataManager {
-    public static final File playerDataFile = new File("playerData.json");
+    public static final File playerDataFile = new File(BASE_DIR, "playerData.json");
     public static final Set<PlayerData> allPlayerData = new HashSet<>();
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static void loadPlayerData() {
-        if (!playerDataFile.exists()) {
-            try {
-                if (!playerDataFile.createNewFile()) {
-                    LOGGER.warn("Failed to create {}", playerDataFile);
-                }
-            } catch (IOException e) {
-                LOGGER.warn("Failed to create {}:", playerDataFile, e);
-                throw new RuntimeException(e);
-            }
-        }
+        DirectoryAccessor.initFile(playerDataFile);
         // load player data from file
 
         try (JsonReader jsonReader = new JsonReader(new FileReader(playerDataFile))) {
@@ -56,6 +49,7 @@ public class PlayerDataManager {
 
     public static void save() {
         try {
+            DirectoryAccessor.initFile(playerDataFile);
             FileWriter fileWriter = new FileWriter(playerDataFile);
             fileWriter.write(GsonUtil.createGson().toJson(allPlayerData));
             fileWriter.close();
