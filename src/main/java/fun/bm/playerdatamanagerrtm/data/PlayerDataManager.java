@@ -1,5 +1,8 @@
 package fun.bm.playerdatamanagerrtm.data;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 import com.mojang.logging.LogUtils;
 import fun.bm.playerdatamanagerrtm.data.data.PlayerBaseData;
@@ -21,6 +24,7 @@ import static fun.bm.playerdatamanagerrtm.Playerdatamanagerrtm.BASE_DIR;
 public class PlayerDataManager {
     public static final File playerDataFile = new File(BASE_DIR, "playerData.json");
     public static final Set<PlayerData> allPlayerData = new HashSet<>();
+    private static final Gson GSON = GsonUtil.createPrettyGson();
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static void loadPlayerData() {
@@ -28,12 +32,12 @@ public class PlayerDataManager {
         // load player data from file
 
         try (JsonReader jsonReader = new JsonReader(new FileReader(playerDataFile))) {
-            com.google.gson.JsonArray dataArray = GsonUtil.createGson().fromJson(jsonReader, com.google.gson.JsonArray.class);
+            JsonArray dataArray = GSON.fromJson(jsonReader, JsonArray.class);
 
             if (dataArray != null) {
                 for (int i = 0; i < dataArray.size(); i++) {
-                    com.google.gson.JsonElement dataElement = dataArray.get(i);
-                    PlayerData data = GsonUtil.createGson().fromJson(dataElement, PlayerData.class);
+                    JsonElement dataElement = dataArray.get(i);
+                    PlayerData data = GSON.fromJson(dataElement, PlayerData.class);
 
                     allPlayerData.add(data);
                 }
@@ -51,7 +55,7 @@ public class PlayerDataManager {
         try {
             DirectoryAccessor.initFile(playerDataFile);
             FileWriter fileWriter = new FileWriter(playerDataFile);
-            fileWriter.write(GsonUtil.createGson().toJson(allPlayerData));
+            fileWriter.write(GSON.toJson(allPlayerData));
             fileWriter.close();
         } catch (Exception e) {
             LOGGER.warn("Failed to save data file", e);

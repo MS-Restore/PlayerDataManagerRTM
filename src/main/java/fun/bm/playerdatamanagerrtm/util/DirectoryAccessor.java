@@ -68,10 +68,10 @@ public class DirectoryAccessor {
                 if (file.createNewFile()) {
                     LOGGER.info("Created file: {}", file.getAbsolutePath());
                 } else {
-                    LOGGER.warn("Failed to create {}", file);
+                    LOGGER.warn("Failed to create {}", file.getAbsolutePath());
                 }
             } catch (Exception e) {
-                LOGGER.warn("Failed to create {}:", file, e);
+                LOGGER.warn("Failed to create {}:", file.getAbsolutePath(), e);
             }
         }
     }
@@ -81,7 +81,7 @@ public class DirectoryAccessor {
             try {
                 file.delete();
             } catch (Exception e) {
-                LOGGER.warn("Failed to delete {}:", file, e);
+                LOGGER.warn("Failed to delete {}:", file.getAbsolutePath(), e);
             }
         }
     }

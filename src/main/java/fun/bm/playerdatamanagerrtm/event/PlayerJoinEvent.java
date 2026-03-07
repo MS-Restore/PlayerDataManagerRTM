@@ -13,38 +13,30 @@ public class PlayerJoinEvent {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             ServerPlayerEntity player = handler.player;
             PlayerData data = PlayerDataManager.getPlayerData(player);
+            PlayerOldData oldData = data.oldData;
+            PlayerBaseData baseData = data.baseData;
 
-            {
-                // process old data
-                PlayerOldData oldData = data.oldData;
-                PlayerBaseData baseData = data.baseData;
-                if (!baseData.name.equals(player.getEntityName())) {
-                    oldData.usedNames.add(baseData.name);
-                }
-                if (!baseData.lastUsedIp.equals(player.getIp()) && !baseData.lastUsedIp.equals("unknown")) {
-                    oldData.usedIps.add(baseData.lastUsedIp);
-                }
+            // process old data
+            if (!baseData.name.equals(player.getEntityName())) {
+                oldData.usedNames.add(baseData.name);
+            }
+            if (!baseData.lastUsedIp.equals(player.getIp()) && !baseData.lastUsedIp.equals("unknown")) {
+                oldData.usedIps.add(baseData.lastUsedIp);
             }
 
-            {
-                // process base data
-                PlayerBaseData baseData = data.baseData;
-                baseData.name = player.getEntityName();
-                baseData.lastUsedIp = player.getIp();
+            // process base data
+            baseData.name = player.getEntityName();
+            baseData.lastUsedIp = player.getIp();
+
+            // process gameplay data
+            PlayerGameplayData gameplayData = data.gamePlayData;
+            if (gameplayData.firstJoin == 0) {
+                gameplayData.firstJoin = System.currentTimeMillis();
             }
+            gameplayData.lastJoin = System.currentTimeMillis();
+            gameplayData.totalJoins++;
 
-            {
-                // process gameplay data
-                PlayerGameplayData gameplayData = data.gamePlayData;
-                if (gameplayData.firstJoin == 0) {
-                    gameplayData.firstJoin = System.currentTimeMillis();
-                }
-
-                gameplayData.lastJoin = System.currentTimeMillis();
-
-                gameplayData.totalJoins++;
-            }
-
+            // save modified data
             PlayerDataManager.save();
         });
     }

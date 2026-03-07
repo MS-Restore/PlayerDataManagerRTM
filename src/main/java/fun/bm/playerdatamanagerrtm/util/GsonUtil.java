@@ -4,9 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GsonUtil {
-    public static Gson createGson() {
+    public static Gson createPrettyGson() {
         return new GsonBuilder()
                 .setPrettyPrinting()
+                .create();
+    }
+
+    public static Gson createGson() {
+        return new GsonBuilder()
                 .create();
     }
 }
