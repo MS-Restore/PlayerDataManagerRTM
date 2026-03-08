@@ -1,4 +1,4 @@
-package fun.bm.playerdatamanagerrtm.data.data;
+package fun.bm.playerdatamanagerrtm.data.player.data;
 
 import java.util.HashSet;
 import java.util.Set;

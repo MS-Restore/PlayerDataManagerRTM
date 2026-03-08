@@ -1,8 +1,8 @@
-package fun.bm.playerdatamanagerrtm.event.data.events;
+package fun.bm.playerdatamanagerrtm.event.playerdata.events;
 
-import fun.bm.playerdatamanagerrtm.data.PlayerDataManager;
-import fun.bm.playerdatamanagerrtm.data.data.PlayerData;
-import fun.bm.playerdatamanagerrtm.data.data.PlayerGameplayData;
+import fun.bm.playerdatamanagerrtm.data.player.PlayerDataManager;
+import fun.bm.playerdatamanagerrtm.data.player.data.PlayerData;
+import fun.bm.playerdatamanagerrtm.data.player.data.PlayerGameplayData;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;

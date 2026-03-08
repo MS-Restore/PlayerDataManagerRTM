@@ -1,12 +1,12 @@
-package fun.bm.playerdatamanagerrtm.data;
+package fun.bm.playerdatamanagerrtm.data.player;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 import com.mojang.logging.LogUtils;
-import fun.bm.playerdatamanagerrtm.data.data.PlayerBaseData;
-import fun.bm.playerdatamanagerrtm.data.data.PlayerData;
+import fun.bm.playerdatamanagerrtm.data.player.data.PlayerBaseData;
+import fun.bm.playerdatamanagerrtm.data.player.data.PlayerData;
 import fun.bm.playerdatamanagerrtm.util.DirectoryAccessor;
 import fun.bm.playerdatamanagerrtm.util.GsonUtil;
 import net.minecraft.server.network.ServerPlayerEntity;

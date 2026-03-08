@@ -1,4 +1,4 @@
-package fun.bm.playerdatamanagerrtm.data.data;
+package fun.bm.playerdatamanagerrtm.data.player.data;
 
 public class PlayerData {
     public PlayerBaseData baseData = null;
