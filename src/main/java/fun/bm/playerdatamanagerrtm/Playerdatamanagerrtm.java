@@ -1,7 +1,7 @@
 package fun.bm.playerdatamanagerrtm;
 
 import fun.bm.playerdatamanagerrtm.data.PlayerDataManager;
-import fun.bm.playerdatamanagerrtm.event.EventRegister;
+import fun.bm.playerdatamanagerrtm.event.EventsRegister;
 import net.fabricmc.api.ModInitializer;
 
 import java.io.File;
@@ -12,6 +12,6 @@ public class Playerdatamanagerrtm implements ModInitializer {
     @Override
     public void onInitialize() {
         PlayerDataManager.loadPlayerData();
-        EventRegister.register();
+        EventsRegister.register();
     }
 }

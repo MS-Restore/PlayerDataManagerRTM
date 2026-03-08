@@ -10,6 +10,8 @@ import fun.bm.playerdatamanagerrtm.data.data.PlayerData;
 import fun.bm.playerdatamanagerrtm.util.DirectoryAccessor;
 import fun.bm.playerdatamanagerrtm.util.GsonUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -30,7 +32,6 @@ public class PlayerDataManager {
     public static void loadPlayerData() {
         DirectoryAccessor.initFile(playerDataFile);
         // load player data from file
-
         try (JsonReader jsonReader = new JsonReader(new FileReader(playerDataFile))) {
             JsonArray dataArray = GSON.fromJson(jsonReader, JsonArray.class);
 
@@ -42,16 +43,14 @@ public class PlayerDataManager {
                     allPlayerData.add(data);
                 }
             }
-
-            save();
-
+            saveDataToFile();
         } catch (Exception e) {
             LOGGER.warn("Failed to read data file", e);
             throw new RuntimeException(e);
         }
     }
 
-    public static void save() {
+    public static void saveDataToFile() {
         try {
             DirectoryAccessor.initFile(playerDataFile);
             FileWriter fileWriter = new FileWriter(playerDataFile);
@@ -62,7 +61,7 @@ public class PlayerDataManager {
         }
     }
 
-    public static PlayerData getPlayerData(String playerName) {
+    public static @Nullable PlayerData getPlayerDataOrNull(String playerName) {
         for (PlayerData data : allPlayerData) {
             if (data.baseData.name.equals(playerName)) {
                 return data;
@@ -71,7 +70,7 @@ public class PlayerDataManager {
         return null;
     }
 
-    public static PlayerData getPlayerData(UUID playerUuid) {
+    public static @Nullable PlayerData getPlayerDataOrNull(UUID playerUuid) {
         for (PlayerData data : allPlayerData) {
             if (data.baseData.uuid.equals(playerUuid)) {
                 return data;
@@ -80,18 +79,20 @@ public class PlayerDataManager {
         return null;
     }
 
-    public static PlayerData getPlayerData(ServerPlayerEntity player) {
-        for (PlayerData data : allPlayerData) {
-            if (data.baseData.uuid.equals(player.getUuid())) {
-                return data;
-            }
+    public static @Nullable PlayerData getPlayerDataOrNull(ServerPlayerEntity player) {
+        return getPlayerDataOrNull(player.getUuid());
+    }
+
+    public static @NotNull PlayerData getPlayerData(ServerPlayerEntity player) {
+        PlayerData data = getPlayerDataOrNull(player);
+        if (data == null) {
+            data = generateNewPlayerData(player);
+            allPlayerData.add(data);
         }
-        PlayerData data = generateNewPlayerData(player);
-        allPlayerData.add(data);
         return data;
     }
 
-    public static PlayerData generateNewPlayerData(ServerPlayerEntity player) {
+    private static @NotNull PlayerData generateNewPlayerData(ServerPlayerEntity player) {
         PlayerData data = new PlayerData();
         PlayerBaseData baseData = new PlayerBaseData();
         baseData.name = player.getName().getString();
